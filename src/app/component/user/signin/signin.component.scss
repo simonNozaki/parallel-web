@@ -1,0 +1,70 @@
+@import "../../../app.component.scss";
+@import "../../../../assets/stylesheet/common-variables.scss";
+
+/* ----------------------
+ * 画面見出し
+ * ---------------------*/
+
+#task-manager-signin-title {
+    margin: 50px 0 0 0;
+    padding: 0;
+    text-align: center;
+}
+
+#task-manager-signin-title h1{
+    display: inline-block;
+    font-family: Roboto;
+    font-size: 30px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #000000;
+}
+
+
+/* ----------------------
+ * 入力フォームコンテナ
+ * ----------------------*/
+#task-manager-signin-item-container{
+    width: 576px;
+    height: 420px;
+    border-radius: 10px;
+    background-color: #fafafa;
+    margin: 0 auto;
+    padding: 0;
+    // 配下のinline-blockのinputを中央揃え
+    text-align: center;
+
+    input {
+        width: 300px;
+        height: 40px;
+        font-size: 20px;
+        letter-spacing: normal;
+        color: #bdbdbd;
+        display: inline-block;
+        margin: 50px 0 0 0;
+        // 入力フォーム内文字列を中央揃え
+        text-align: center;
+        background-color: #fafafa;
+    }
+
+    button {
+        width: 300px;
+        height: 40px;
+        font-size: 20px;
+        letter-spacing: normal;
+        text-align: center;
+        margin: 50px 0 0 0;
+        background-color: #00b686;
+    }
+}
+
+
+/* ----------------------
+ * 入力チェックエラー
+ * ----------------------*/
+#task-manager-signin-error {
+    @extend .base-error-message-style;
+}

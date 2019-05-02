@@ -1,0 +1,62 @@
+@import "../../app.component.scss";
+
+/* ----------------------
+ * タグコンテナ
+ * ----------------------*/
+ #task-manager-task-label-container {
+    width: 250px;
+    height: 100vh;
+    background-color: #fafafa;
+    text-align: center;
+
+    ul {
+        height: 430px;
+        padding: 0;
+        overflow: auto;
+        margin: 0 auto;
+        @extend .pt-50-centered;
+    }
+
+    ul li {
+        margin: 0 auto;
+        padding: 10px 0;
+        text-align: center;
+    }
+
+    // マウスオンで色を変える
+    li:hover {
+        background-color: $BACKGROUND_COLOR_DARKGRAY;
+    }
+
+}
+
+/* タグ登録フォーム */
+#task-manager-task-label-form-container {
+    border-top: #bdbdbd;
+    width: 100%;
+    text-align: center;
+
+    // タグ登録フォーム
+    input {
+        width: 200px;
+        height: 40px;
+        font-size: 18px;
+        letter-spacing: normal;
+        display: inline-block;
+        text-align: center;
+        color: #bdbdbd;
+        background-color: #fafafa;
+    }
+
+    // タグ登録ボタン
+    button {
+        @extend .common-button-submit;
+        width: 200px;
+        @extend .mt-20-centered;
+    }
+}
+
+/* エラー表示 */
+#task-manager-task-label-error {
+    @extend .base-error-message-style;
+}
