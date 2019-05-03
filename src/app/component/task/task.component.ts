@@ -28,7 +28,7 @@ export class TaskComponent implements OnInit {
     /** 
      * デフォルトコンストラクタ
      */
-    constructor(private taskService: TaskService, private router: Router, private commonDeliveryService: CommonDeliveryService) {}
+    constructor(private taskService: TaskService, private router: Router, public commonDeliveryService: CommonDeliveryService) {}
 
     /**
      * 利用者ID

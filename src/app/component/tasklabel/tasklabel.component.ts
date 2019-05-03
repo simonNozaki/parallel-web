@@ -27,7 +27,7 @@ export class TasklabelComponent implements OnInit {
     /**
      * デフォルトコンストラクタ
      */
-    constructor(private commonDeliveryService: CommonDeliveryService, private taskLabelService: TaskLabelService, private taskService: TaskService) { }
+    constructor(public commonDeliveryService: CommonDeliveryService, private taskLabelService: TaskLabelService, private taskService: TaskService) { }
 
     /**
      * 利用者ID
