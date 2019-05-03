@@ -1,3 +1,5 @@
+import { environment } from "../../environments/environment";
+
 /**
  * Service共通の定数定義モジュールです.
  */
@@ -10,12 +12,12 @@ export module ServiceConst {
   /**
    * ドメイン
    */
-  export const BASE_URL = 'http://localhost:18080/';
+  export const BASE_URL = 'http://' + environment.apiUrl + ':18080/';
   
   /**
    * コンテキストパス
    */
-  export const BASE_API_VERSION = 'api/v1';
+  export const BASE_API_VERSION = environment.contextPath;
   
   /**
    * 処理大項目：タスク
