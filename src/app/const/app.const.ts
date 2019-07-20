@@ -150,6 +150,11 @@ export module AppConst {
     export const USER_PASSWORD_NOT_HALF_SIZED: string = "パスワードは半角英数字のみ使用してください。";
 
     /**
+     * 入力されたパスワードが一致しません。
+     */
+    export const USER_PASSWORD_NOT_MATCHED: string = "入力されたパスワードが一致しません。";
+
+    /**
      * 入力されたパスワードはすでに利用されています。
      */
     export const USER_ALREADY_REGISTERD: string = "入力されたパスワードはすでに利用されています。";
