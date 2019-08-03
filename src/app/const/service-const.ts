@@ -1,3 +1,5 @@
+import { environment } from "../../environments/environment";
+
 /**
  * Service共通の定数定義モジュールです.
  */
@@ -10,23 +12,13 @@ export module ServiceConst {
   /**
    * ドメイン
    */
-  export const BASE_URL = 'http://localhost:18080/';
-
-  // /**
-  // * FQDN(本番用)
-  // */
-  // export const BASE_URL = 'internal-prod-private-alb-297496988.ap-northeast-1.elb.amazonaws.com:18080/'
-
+  export const BASE_URL = 'http://' + environment.apiUrl + ':18080/';
+  
   /**
    * コンテキストパス
    */
-  export const BASE_API_VERSION = 'api/v1';
-
-  // /**
-  // * コンテキストパス(本番用)
-  // */
-  // export const BASE_API_VERSION = 'parall-api/api/v1';
-
+  export const BASE_API_VERSION = environment.contextPath;
+  
   /**
    * 処理大項目：タスク
    */
