@@ -54,6 +54,8 @@
         </div>
         <!-- 入力チェックエラー表示 -->
         <div *ngIf="violateRistriction()" class="base-error-message-style"> {{ checkedResult }} </div>
+        <!-- APIエラー結果 -->
+        <div class="base-error-message-style"> {{ processedResult }} </div>
     </div>
 
 </div>

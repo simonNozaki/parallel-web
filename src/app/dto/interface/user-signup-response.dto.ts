@@ -1,7 +1,7 @@
 import { Errors } from "../common/errors";
 
 /**
- * 利用者サインアップリクエストDTO。
+ * 利用者サインアップレスポンスDTO。
  */
 export class UserSignupResponseDto {
 
@@ -18,5 +18,5 @@ export class UserSignupResponseDto {
     /**
      * エラーコード
      */
-    public errors: Errors[];
+    public errors: Errors;
 }

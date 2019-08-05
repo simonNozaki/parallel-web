@@ -1,13 +1,10 @@
-import { Errors } from "../common/errors";
+import { GeneralError } from "../common/general-error";
 
 /**
  * 利用者サインインリクエストDTO。
  */
 export class UserSigninResponseDto {
 
-    /**
-     * 認証トークン
-     */
     public authenticationToken: string;
 
     /**
@@ -33,5 +30,5 @@ export class UserSigninResponseDto {
     /**
      * エラーコード
      */
-    public errors: Errors[];
+    public errors: GeneralError;
 }

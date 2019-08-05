@@ -12,6 +12,7 @@ import { GlobalErrorHandler } from '../exception/global-error-handler';
 import { TaskCompleteRequestDto } from '../dto/interface/task-complete-request.dto';
 import { TaskCompleteResponseDto } from '../dto/interface/task-complete-response.dto';
 import { RegistTaskResponse } from '../dto/interface/regist-task-response';
+import { Errors } from '../dto/common/errors';
 
 
 /**
@@ -52,13 +53,8 @@ export class TaskService {
      * @param registTaskRequest: RegistTaskRequest
      * @returns Observable<RegistTaskRequest>
      */
-    public registTask(registTaskRequest: RegistTaskRequest): Observable<RegistTaskResponse> {
-        // HTTPリクエストのオプションをセットします.
-        const httpOptions = {
-            headers : this.httpHeaders
-        };
-        // APIをコールします.
-        return this.http.post<RegistTaskRequest>(ServiceConst.URL_TASK_REGIST, registTaskRequest, httpOptions)
+    public registTask(registTaskRequest: RegistTaskRequest): Observable<RegistTaskResponse | Errors> {
+        return this.http.post<RegistTaskRequest>(ServiceConst.URL_TASK_REGIST, registTaskRequest, { headers : this.httpHeaders })
             .pipe(catchError(GlobalErrorHandler.handleError));
     }
 
@@ -68,13 +64,7 @@ export class TaskService {
      * @returns Observable<TaskCompleteResponseDto>
      */
     public complete(taskCompleteRequestDto: TaskCompleteRequestDto): Observable<TaskCompleteResponseDto> {
-        // HTTPリクエストのヘッダー情報を設定します。
-        const options = {
-            headers : this.httpHeaders
-        }
-
-        // APIをコールし、コンポーネントにObservableを返却します。
-        return this.http.patch<TaskCompleteRequestDto>(ServiceConst.URL_TASK_COMPLETE, taskCompleteRequestDto, options)
+        return this.http.patch<TaskCompleteRequestDto>(ServiceConst.URL_TASK_COMPLETE, taskCompleteRequestDto, { headers : this.httpHeaders })
             .pipe(catchError(GlobalErrorHandler.handleError));
 
     }

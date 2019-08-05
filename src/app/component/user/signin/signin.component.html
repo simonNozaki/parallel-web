@@ -11,10 +11,13 @@
         <button (click)="signin()" [disabled]="">サインイン</button>
 
         <!-- 入力チェックエラー表示 -->
-        <div *ngIf="violateRistriction()" id="task-manager-signin-error">
-            <p>
-                {{ checkedResult }}
-            </p>
+        <div *ngIf="violateRistriction()" class="task-manager-signin-error">
+            <p> {{ checkedResult }} </p>
+        </div>
+
+        <!-- API処理結果エラー -->
+        <div class="task-manager-signin-error">
+            <p> {{ processedResult }} </p>
         </div>
     </form>
 </div>

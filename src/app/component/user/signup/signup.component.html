@@ -14,10 +14,13 @@
         <button (click)="signup()" [disabled]="">サインアップ</button>
 
         <!-- 入力チェックエラー -->
-        <div *ngIf="violateRistriction()" id="task-manager-signup-error">
-            <p>
-                {{ checkedResult }}
-            </p>
+        <div *ngIf="violateRistriction()" class="task-manager-signup-error">
+            <p> {{ checkedResult }} </p>
+        </div>
+
+        <!-- APIレスポンスエラー -->
+        <div class="task-manager-signup-error">
+            <p> {{ processedResult }} </p>  
         </div>
     </form>
 </div>

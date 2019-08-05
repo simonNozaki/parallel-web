@@ -6,6 +6,7 @@ import { catchError } from 'rxjs/operators';
 import { GlobalErrorHandler } from '../exception/global-error-handler';
 import { UserSigninResponseDto } from '../dto/interface/user-signin-response.dto';
 import { UserSigninRequestDto } from '../dto/interface/user-signin-request.dto';
+import { GeneralError } from '../dto/common/general-error';
 
 /**
  * 利用者サインインサービスクラス。
@@ -31,7 +32,7 @@ export class SigninService {
      * @param userSigninRequestDto
      * @returns Observable<UserSigninResponseDto>
      */
-    public signin(userSigninRequestDto: UserSigninRequestDto): Observable<UserSigninResponseDto> {
+    public signin(userSigninRequestDto: UserSigninRequestDto): Observable<UserSigninResponseDto | GeneralError> {
         return this.http.post<UserSigninRequestDto>(ServiceConst.URL_USER_SIGNIN, userSigninRequestDto, { headers : this.httpHeaders })
             .pipe((res: Observable<UserSigninResponseDto>) => {
                 // セッションの保存

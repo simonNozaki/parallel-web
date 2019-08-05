@@ -7,10 +7,11 @@ import { TaskManagerCode } from '../../../codedef/task-manager-code';
 import { UserSignupResponseDto } from '../../../dto/interface/user-signup-response.dto';
 import { Router } from '@angular/router';
 import { ServiceConst } from '../../../const/service-const';
-import { ObjectUtil } from '../../../util/object.util';
 import { CommonDeliveryService } from '../../../service/common-delivery.service';
 import { StringUtil } from '../../../util/string-util';
 import { CookieService } from 'ngx-cookie-service';
+import { Errors } from '../../../dto/common/errors';
+import { ApiErrorCode } from '../../../codedef/api-error-code.enum';
 
 /**
  * 利用者サインアップコンポーネントクラス。
@@ -47,6 +48,8 @@ export class SignupComponent implements OnInit {
      */
     public checkedResult: string;
 
+    public processedResult: string;
+
     /**
      * 利用者情報登録フォームグループ
      */
@@ -55,7 +58,7 @@ export class SignupComponent implements OnInit {
         emailControl: new FormControl("", [Validators.required, Validators.maxLength(AppConst.USER_EMAIL_MAX_LENGTH), 
             Validators.email]),
         passwordControl: new FormControl("", [Validators.required, Validators.maxLength(AppConst.USER_PASSWORD_MAX_LENGTH),
-            Validators.pattern(StringUtil.REGEX_FORMAT_HALF_SIZE)]),
+            Validators.minLength(AppConst.USER_PASSWORD_MIN_LENGTH), Validators.pattern(StringUtil.REGEX_FORMAT_HALF_SIZE)]),
         passwordConfirmationControl: new FormControl("", [Validators.required, Validators.maxLength(AppConst.USER_PASSWORD_MAX_LENGTH),
           Validators.pattern(StringUtil.REGEX_FORMAT_HALF_SIZE)])
     })
@@ -72,21 +75,18 @@ export class SignupComponent implements OnInit {
             req.password = this.signupForm.get("passwordControl").value;
             req.usedFlag = TaskManagerCode.USER_USED_FLAG_USED;
 
-            // Serviceクラスを実行します。
-            this.signupService.signup(req).subscribe((res: UserSignupResponseDto) => {
-                console.log(JSON.stringify(res));
-                // すでに使われているメールアドレスの場 合は、エラーメッセージを表示して何もしない
-                if (!ObjectUtil.isNullOrUndefined(res.errors)) {
-                    this.checkedResult = AppConst.USER_ALREADY_REGISTERD;
-                } else {
+            this.signupService.signup(req).subscribe(
+                (res: UserSignupResponseDto) => {
                     this.commonDeliveryService.emitUserIdChange(res.userId);
                     this.cookieService.set("currentUser", res.userId, 1);
                     this.router.navigateByUrl(ServiceConst.BASE_SLASH + ServiceConst.URL_WEB_TASK);
-                }
                 },
-                (error) => {
-                    console.warn(JSON.stringify(error.error));
-                }
+                (error: Errors) => {
+                    // console.error(error.errors);
+                    console.log(JSON.stringify(error));
+                    if(error.codes[0] === ApiErrorCode.ERR999999) this.processedResult = AppConst.SYSTEM_ERROR;
+                    else this.processedResult = AppConst.USER_ALREADY_REGISTERD;
+                },
             )
         }
     }
@@ -126,14 +126,17 @@ export class SignupComponent implements OnInit {
           return true;
         } else if (password.hasError('maxlength') && (password.touched || password.dirty)) {
           this.checkedResult = AppConst.USER_SIGNUP_PASSWORD_LENGTH_VIOLATED;
+          return true;        
+        } else if (password.hasError('minlength') && (password.touched || password.dirty)) {
+          this.checkedResult = AppConst.USER_SIGNUP_PASSWORD_LENGTH_TOO_SHORT;
           return true;
         } else if (password.hasError('pattern') && (password.touched || password.dirty)) {
             this.checkedResult = AppConst.USER_PASSWORD_NOT_HALF_SIZED;
             return true;
         }
 
+        // パスワード一致チェック
         var passwordConfirmation: AbstractControl = this.signupForm.get("passwordConfirmationControl");
-
         if(password.value !== passwordConfirmation.value) {
             this.checkedResult = AppConst.USER_PASSWORD_NOT_MATCHED;
             return true;

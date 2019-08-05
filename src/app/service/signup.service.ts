@@ -6,6 +6,7 @@ import { catchError } from 'rxjs/operators';
 import { GlobalErrorHandler } from '../exception/global-error-handler';
 import { UserSignupRequestDto } from '../dto/interface/user-signup-request.dto';
 import { UserSignupResponseDto } from '../dto/interface/user-signup-response.dto';
+import { Errors } from '../dto/common/errors';
 
 /**
  * 利用者サインアップServiceクラス。
@@ -31,14 +32,8 @@ export class SignupService {
      * @param userSigninRequestDto
      * @returns Observable<UserSignupResponseDto>
      */
-    public signup(userSignupRequestDto: UserSignupRequestDto): Observable<UserSignupResponseDto> {
-        // ヘッダー情報を設定します。
-        const options = {
-            headers : this.httpHeaders
-        };
-
-        // POSTリクエストを実行します。
-        return this.http.post<UserSignupRequestDto>(ServiceConst.URL_USER_REGIST, userSignupRequestDto, options)
+    public signup(userSignupRequestDto: UserSignupRequestDto): Observable<UserSignupResponseDto | Errors> {
+        return this.http.post<UserSignupRequestDto>(ServiceConst.URL_USER_REGIST, userSignupRequestDto, { headers : this.httpHeaders })
             .pipe(catchError(GlobalErrorHandler.handleError));
     }
 

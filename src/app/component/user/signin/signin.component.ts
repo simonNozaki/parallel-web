@@ -6,10 +6,10 @@ import { SigninService } from '../../../service/signin.service';
 import { CommonDeliveryService } from '../../../service/common-delivery.service';
 import { UserSigninRequestDto } from '../../../dto/interface/user-signin-request.dto';
 import { UserSigninResponseDto } from '../../../dto/interface/user-signin-response.dto';
-import { ObjectUtil } from '../../../util/object.util';
 import { ServiceConst } from '../../../const/service-const';
 import { StringUtil } from '../../../util/string-util';
 import { CookieService } from 'ngx-cookie-service';
+import { ApiErrorCode } from '../../../codedef/api-error-code.enum';
 
 
 /**
@@ -33,6 +33,11 @@ export class SigninComponent implements OnInit {
      * タスクチェック結果
      */
     public checkedResult: string;
+
+    /**
+     * データ処理結果
+     */
+    public processedResult: string;
 
     /**
      * 利用者認証フォームグループ
@@ -66,16 +71,17 @@ export class SigninComponent implements OnInit {
         req.email = this.signinForm.get("emailControl").value;
         req.password = this.signinForm.get("passwordControl").value;
 
-        // サービスクラスを実行します。
-        this.signinService.signin(req).subscribe((res: UserSigninResponseDto) => {
-            // 正常な場合、サービス経由で利用者IDをタスクコンポーネントに引き渡してリダイレクト
-            if (ObjectUtil.isNullOrUndefined(res.errors)) {
+        this.signinService.signin(req).subscribe(
+            (res: UserSigninResponseDto) => {
                 this.commonDeliveryService.emitUserIdChange(res.userId);
                 this.router.navigateByUrl(ServiceConst.BASE_SLASH + ServiceConst.URL_WEB_TASK);
-            } else {
-                this.checkedResult = AppConst.USER_INFO_INVALID;
+            },
+            (res: UserSigninResponseDto) => {
+                console.log(res);
+                if(res.errors.errors.codes[0] === ApiErrorCode.ERR999999) this.processedResult = AppConst.SYSTEM_ERROR;
+                else this.processedResult = AppConst.USER_INFO_INVALID;
             }
-        })
+        )
     }
 
     /**

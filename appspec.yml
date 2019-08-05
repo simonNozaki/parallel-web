@@ -1,0 +1,10 @@
+version: 0.0
+os: linux
+files:
+  - source: dist/
+    destination: /workspace/www/task.parallel-stream.com/
+hooks:
+  BeforeInstall:
+    - location: script/stop-apache.sh
+  ApplicationStart:
+    - location: script/start-apache.sh

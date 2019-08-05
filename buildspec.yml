@@ -1,0 +1,20 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      java: openjdk8
+    commands:
+      - echo ///////////////// Construct build runtime for Gradle  /////////////////
+      - gradle -v
+  pre_build:
+    commands:
+      - echo ///////////////// Start to compile resources... /////////////////
+      - npm install
+  build:
+    commands:
+      - echo ///////////////// Build started on `date` /////////////////
+      - ./node_modules/.bin/ng build --prod
+  post_build:
+    commands:
+      - echo ///////////////// Build completed on `date` /////////////////

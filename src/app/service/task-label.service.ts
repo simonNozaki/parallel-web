@@ -47,12 +47,7 @@ export class TaskLabelService {
      * @returns Observable<RegistTaskRequest>
      */
     public registerLabel(req: TaskLabelRegisterRequestDto): Observable<TaskLabelRegisterResponseDto> {
-      // HTTPリクエストのオプションをセットします.
-      const httpOptions = {
-          headers : this.httpHeaders
-      };
-      // APIをコールします.
-      return this.http.post<TaskLabelRegisterRequestDto>(ServiceConst.URL_TASK_LABEL, req, httpOptions)
+      return this.http.post<TaskLabelRegisterRequestDto>(ServiceConst.URL_TASK_LABEL, req, { headers : this.httpHeaders })
           .pipe(catchError(GlobalErrorHandler.handleError));
   }
 

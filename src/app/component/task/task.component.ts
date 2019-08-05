@@ -14,6 +14,8 @@ import { Router } from '@angular/router';
 import { ServiceConst } from '../../const/service-const';
 import { RegistTaskResponse } from '../../dto/interface/regist-task-response';
 import { DateUtil } from '../../util/date-util';
+import { Errors } from '../../dto/common/errors';
+import { ApiErrorCode } from '../../codedef/api-error-code.enum';
 
 /**
  * タスクの業務処理コンポーネント
@@ -25,9 +27,6 @@ import { DateUtil } from '../../util/date-util';
 })
 export class TaskComponent implements OnInit {
 
-    /** 
-     * デフォルトコンストラクタ
-     */
     constructor(private taskService: TaskService, private router: Router, public commonDeliveryService: CommonDeliveryService) {}
 
     /**
@@ -35,11 +34,7 @@ export class TaskComponent implements OnInit {
      */ 
     public userId: string;
 
-    /**
-     * コンポーネント初期化時の起動処理
-    */
     ngOnInit() {
-        // リダイレクトされたときに、別のコンポーネントから動的に利用者IDを受け取ります。
         this.commonDeliveryService.observableUserId.subscribe((userId: string) => {
             this.userId = userId;
         });
@@ -76,6 +71,11 @@ export class TaskComponent implements OnInit {
     public checkedResult: string;
 
     /**
+     * API処理結果
+     */
+    public processedResult: string;
+
+    /**
      * サービスクラスから、タスクの一覧を取得します.
      * @param userId: string
     */
@@ -96,7 +96,6 @@ export class TaskComponent implements OnInit {
             registTaskRequestDto.setTaskTitle(this.taskForm.get("taskTitleControl").value);
             this.taskForm.get("taskLabelControl").value != "" ? registTaskRequestDto.setTaskLabel(this.taskForm.get("taskLabelControl").value)
                 : registTaskRequestDto.setTaskLabel(null)
-            // registTaskRequestDto.setTaskLabel(this.taskForm.get("taskLabelControl").value);
             if (ObjectUtil.isNullOrUndefined(this.taskForm.get("startDateControl").value)) {
                 registTaskRequestDto.setStartDate(DateUtil.formatDateYMDWithSlash(new Date()));
             } else { 
@@ -104,13 +103,14 @@ export class TaskComponent implements OnInit {
             }
             registTaskRequestDto.setDeadline(this.taskForm.get("deadlineControl").value);
             registTaskRequestDto.setTaskNote(this.taskForm.get("taskNoteControl").value);
-            // registTaskRequestDto.setCompletedFlag(TaskManagerCode.TASK_COMPLETED_FLAG_REGISTED);
             registTaskRequestDto.setUserId(this.userId);
 
-            // サービスクラスを実行します。
-            this.taskService.registTask(registTaskRequestDto).subscribe((res: RegistTaskResponse) => {
-                console.log(JSON.stringify(res));
-            });
+            this.taskService.registTask(registTaskRequestDto).subscribe(
+                (res: RegistTaskResponse) => {},
+                (error: Errors) => {
+                    if(error.codes[0] === ApiErrorCode.ERR999999) this.processedResult = AppConst.SYSTEM_ERROR;
+                }
+            );
 
             // 登録したタスクをリストに追加して、随時表を更新します。
             var newTask: Task = new Task();
@@ -176,11 +176,9 @@ export class TaskComponent implements OnInit {
      * @returns void
      */
     public complete(taskId: string): void {
-        // リクエストDTOの初期化
         var taskCompleteRequestDto: TaskCompleteRequestDto = new TaskCompleteRequestDto();
         taskCompleteRequestDto.setTaskId(taskId);
 
-        // サービスクラスの実行。レスポンスが帰ってきてたら、タスクのリストから削除。
         this.taskService.complete(taskCompleteRequestDto).subscribe((res: TaskCompleteResponseDto) => {
             if (!ObjectUtil.isNullOrUndefined(res.taskId)) {
                   // 完了したタスクを抽出

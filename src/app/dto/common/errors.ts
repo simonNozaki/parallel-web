@@ -6,7 +6,7 @@ export class Errors {
   /** 
    * タスクタイトル
    */
-  public taskTitle: string;
+  public id: string;
   
   /** 
    * エラーコードリスト
@@ -19,10 +19,10 @@ export class Errors {
   public setCodes(codes: string[]) {
     this.codes = codes;
   }
-  public getTaskTitle(): string {
-    return this.taskTitle;
+  public getId(): string {
+    return this.id;
   }
-  public setTaskTitle(taskTitle: string) {
-    this.taskTitle = taskTitle;
+  public setId(id: string) {
+    this.id = id;
   }
 }

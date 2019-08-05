@@ -62,6 +62,11 @@ export module AppConst {
     export const USER_PASSWORD_MAX_LENGTH: number = 100;
 
     /**
+     * 利用者パスワード最低文字数、8桁
+     */
+    export const USER_PASSWORD_MIN_LENGTH: number = 8;
+
+    /**
      * 利用者利用フラグ、1桁
      */
     export const USER_USED_FLAG_LENGTH: number = 1;
@@ -140,6 +145,11 @@ export module AppConst {
     export const USER_SIGNUP_PASSWORD_LENGTH_VIOLATED: string = "パスワードが長すぎます。パスワードは100文字までです。";
 
     /**
+     * パスワードが短すぎます。パスワードは8文字以上です。
+     */
+    export const USER_SIGNUP_PASSWORD_LENGTH_TOO_SHORT: string = "パスワードが短すぎます。パスワードは8文字以上です。";
+
+    /**
      * メールアドレスは半角英数字のみ使用してください。
      */
     export const USER_EMAIL_NOT_HALF_SIZED: string = "メールアドレスは半角英数字のみ使用してください。";
@@ -155,9 +165,9 @@ export module AppConst {
     export const USER_PASSWORD_NOT_MATCHED: string = "入力されたパスワードが一致しません。";
 
     /**
-     * 入力されたパスワードはすでに利用されています。
+     * 入力されたユーザ情報はすでに利用されています。
      */
-    export const USER_ALREADY_REGISTERD: string = "入力されたパスワードはすでに利用されています。";
+    export const USER_ALREADY_REGISTERD: string = "入力されたユーザ情報はすでに利用されています。";
 
     /**
      * 入力された利用者情報は存在しません。メールアドレス、もしくはパスワードが正しいことを確認してください。
@@ -172,6 +182,11 @@ export module AppConst {
      * API通信中にエラーが発生しました : 
      */
     export const GLOBAL_ERROR_MESSAGE: string = "API通信中にエラーが発生しました : ";
+
+    /**
+     * システムエラーが発生しました。
+     */
+    export const SYSTEM_ERROR: string = "システムエラーが発生しました。";
 
     /**
      * HTTPステータスコード : 

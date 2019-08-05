@@ -23,28 +23,4 @@ export class UserSignupRequestDto {
      */
     public usedFlag: string;
 
-    // public getUserName() {
-    //     return this.userName;
-    // }
-    // public setUserName(userName: string) {
-    //     this.userName = userName;
-    // }
-    // public getEmail() {
-    //     return this.email;
-    // }
-    // public setEmail(email: string) {
-    //     this.email = email;
-    // }
-    // public getPassword() {
-    //     return this.password;
-    // }
-    // public setPassword(password: string) {
-    //     this.password = password;
-    // }
-    // public getUsedFlag() {
-    //     return this.usedFlag;
-    // }
-    // public setUsedFlag(usedFlag: string) {
-    //     this.usedFlag = usedFlag;
-    // }
 }
