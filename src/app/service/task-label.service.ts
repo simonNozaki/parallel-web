@@ -19,6 +19,14 @@ export class TaskLabelService {
      */
     constructor(private http: HttpClient) { }
 
+    /**
+     * 更新系リクエスト共通HTTPヘッダー
+     */
+    private httpHeaders: HttpHeaders = new HttpHeaders({
+        'Content-Type':  'application/json',
+        'Access-Control-Allow-Origin': '*'
+    });
+
     /** 
      * タスクラベルの一覧を取得します。
      */
@@ -41,9 +49,7 @@ export class TaskLabelService {
     public registerLabel(req: TaskLabelRegisterRequestDto): Observable<TaskLabelRegisterResponseDto> {
       // HTTPリクエストのオプションをセットします.
       const httpOptions = {
-          headers : new HttpHeaders({
-              'Content-Type':  'application/json'
-          })
+          headers : this.httpHeaders
       };
       // APIをコールします.
       return this.http.post<TaskLabelRegisterRequestDto>(ServiceConst.URL_TASK_LABEL, req, httpOptions)

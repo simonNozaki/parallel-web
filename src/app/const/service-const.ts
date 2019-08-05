@@ -12,7 +12,7 @@ export module ServiceConst {
   /**
    * ドメイン
    */
-  export const BASE_URL = 'http://' + environment.apiUrl + ':18080/';
+  export const BASE_URL = environment.apiUrl;
   
   /**
    * コンテキストパス

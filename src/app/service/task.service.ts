@@ -25,6 +25,14 @@ export class TaskService {
    */
   constructor(private http: HttpClient) { }
 
+    /**
+     * 更新系リクエスト共通HTTPヘッダー
+     */
+    private httpHeaders: HttpHeaders = new HttpHeaders({
+        'Content-Type':  'application/json',
+        'Access-Control-Allow-Origin': '*'
+    });
+
     /** 
      * タスクの一覧を取得するAPIをコールします.
      */
@@ -47,9 +55,7 @@ export class TaskService {
     public registTask(registTaskRequest: RegistTaskRequest): Observable<RegistTaskResponse> {
         // HTTPリクエストのオプションをセットします.
         const httpOptions = {
-            headers : new HttpHeaders({
-                'Content-Type':  'application/json'
-              })
+            headers : this.httpHeaders
         };
         // APIをコールします.
         return this.http.post<RegistTaskRequest>(ServiceConst.URL_TASK_REGIST, registTaskRequest, httpOptions)
@@ -64,9 +70,7 @@ export class TaskService {
     public complete(taskCompleteRequestDto: TaskCompleteRequestDto): Observable<TaskCompleteResponseDto> {
         // HTTPリクエストのヘッダー情報を設定します。
         const options = {
-            headers : new HttpHeaders({
-              'Content-Type':  'application/json'
-            })
+            headers : this.httpHeaders
         }
 
         // APIをコールし、コンポーネントにObservableを返却します。

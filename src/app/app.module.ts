@@ -7,7 +7,7 @@ import { CookieService } from 'ngx-cookie-service';
 
 import { AppComponent } from './app.component';
 import { TaskComponent } from './component/task/task.component';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { WebModule } from './routes/web/web.module';
 import { TaskService } from './service/task.service';
 import { WebRoutingModule } from './routes/web/web-routing.module';
@@ -20,7 +20,7 @@ import { TaskLabelService } from './service/task-label.service';
 import { SignoutService } from './service/signout.service';
 import { TasklabelComponent } from './component/tasklabel/tasklabel.component';
 import { TasklineComponent } from './component/taskline/taskline.component';
-import { IntroductionComponent } from './introduction/introduction/introduction.component';
+import { IntroductionComponent } from './component/introduction/introduction/introduction.component';
 
 @NgModule({
   declarations: [

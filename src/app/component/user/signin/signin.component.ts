@@ -9,6 +9,7 @@ import { UserSigninResponseDto } from '../../../dto/interface/user-signin-respon
 import { ObjectUtil } from '../../../util/object.util';
 import { ServiceConst } from '../../../const/service-const';
 import { StringUtil } from '../../../util/string-util';
+import { CookieService } from 'ngx-cookie-service';
 
 
 /**
@@ -24,7 +25,7 @@ export class SigninComponent implements OnInit {
     /**
      * デフォルトコンストラクタ。
      */
-    constructor(private signinService: SigninService, private router: Router, private commonDeliveryService: CommonDeliveryService) {
+    constructor(private signinService: SigninService, private router: Router, private commonDeliveryService: CommonDeliveryService, private cookieService: CookieService) {
         this.router = router;
     }
 
@@ -49,6 +50,11 @@ export class SigninComponent implements OnInit {
     public userId: string;
 
     ngOnInit() {
+        // Cookieに有効なログイン情報があれば、ログイン成功とする
+        if(this.cookieService.check("currentUser")){
+            this.commonDeliveryService.emitUserIdChange(this.cookieService.get("currentUser"));
+            this.router.navigateByUrl(ServiceConst.BASE_SLASH + ServiceConst.URL_WEB_TASK);
+        }
     }  
 
     /**

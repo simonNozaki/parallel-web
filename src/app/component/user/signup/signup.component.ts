@@ -10,6 +10,7 @@ import { ServiceConst } from '../../../const/service-const';
 import { ObjectUtil } from '../../../util/object.util';
 import { CommonDeliveryService } from '../../../service/common-delivery.service';
 import { StringUtil } from '../../../util/string-util';
+import { CookieService } from 'ngx-cookie-service';
 
 /**
  * 利用者サインアップコンポーネントクラス。
@@ -28,7 +29,7 @@ export class SignupComponent implements OnInit {
     /**
      * デフォルトコンストラクタ
      */
-    constructor(private signupService: SignupService, private router: Router, private commonDeliveryService: CommonDeliveryService) { 
+    constructor(private signupService: SignupService, private router: Router, private commonDeliveryService: CommonDeliveryService, private cookieService: CookieService) { 
         this.router = router;
     }
 
@@ -54,7 +55,9 @@ export class SignupComponent implements OnInit {
         emailControl: new FormControl("", [Validators.required, Validators.maxLength(AppConst.USER_EMAIL_MAX_LENGTH), 
             Validators.email]),
         passwordControl: new FormControl("", [Validators.required, Validators.maxLength(AppConst.USER_PASSWORD_MAX_LENGTH),
-            Validators.pattern(StringUtil.REGEX_FORMAT_HALF_SIZE)])
+            Validators.pattern(StringUtil.REGEX_FORMAT_HALF_SIZE)]),
+        passwordConfirmationControl: new FormControl("", [Validators.required, Validators.maxLength(AppConst.USER_PASSWORD_MAX_LENGTH),
+          Validators.pattern(StringUtil.REGEX_FORMAT_HALF_SIZE)])
     })
 
     /**
@@ -75,9 +78,9 @@ export class SignupComponent implements OnInit {
                 // すでに使われているメールアドレスの場 合は、エラーメッセージを表示して何もしない
                 if (!ObjectUtil.isNullOrUndefined(res.errors)) {
                     this.checkedResult = AppConst.USER_ALREADY_REGISTERD;
-                    console.log(this.checkedResult);
                 } else {
                     this.commonDeliveryService.emitUserIdChange(res.userId);
+                    this.cookieService.set("currentUser", res.userId, 1);
                     this.router.navigateByUrl(ServiceConst.BASE_SLASH + ServiceConst.URL_WEB_TASK);
                 }
                 },
@@ -128,6 +131,14 @@ export class SignupComponent implements OnInit {
             this.checkedResult = AppConst.USER_PASSWORD_NOT_HALF_SIZED;
             return true;
         }
+
+        var passwordConfirmation: AbstractControl = this.signupForm.get("passwordConfirmationControl");
+
+        if(password.value !== passwordConfirmation.value) {
+            this.checkedResult = AppConst.USER_PASSWORD_NOT_MATCHED;
+            return true;
+        }
+
         return false;
     }
 

@@ -19,6 +19,14 @@ export class SignupService {
     constructor(private http: HttpClient) { }
 
     /**
+     * 更新系リクエスト共通HTTPヘッダー
+     */
+    private httpHeaders: HttpHeaders = new HttpHeaders({
+        'Content-Type':  'application/json',
+        'Access-Control-Allow-Origin': '*'
+    });
+
+    /**
      * 新規利用者のサインアップを実施します。
      * @param userSigninRequestDto
      * @returns Observable<UserSignupResponseDto>
@@ -26,9 +34,7 @@ export class SignupService {
     public signup(userSignupRequestDto: UserSignupRequestDto): Observable<UserSignupResponseDto> {
         // ヘッダー情報を設定します。
         const options = {
-          headers : new HttpHeaders({
-              'Content-Type':  'application/json'
-            })
+            headers : this.httpHeaders
         };
 
         // POSTリクエストを実行します。

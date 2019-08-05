@@ -36,7 +36,7 @@
                         <input class="task-manager-task-cards-title" formControlName="taskTitleControl" type="text" name="taskTitle" placeholder="タスクを入力 ..." >
                         <select class="task-manager-task-cards-label" formControlName="taskLabelControl">
                             <option value='' disabled selected style='display:none;'>
-                                ラベルを選択
+                                タグを選択
                             </option>
                             <option></option>
                             <option *ngFor="let labelItem of this.commonDeliveryService.userLabels" [value]="labelItem.taskLabel" name="taskLabel">

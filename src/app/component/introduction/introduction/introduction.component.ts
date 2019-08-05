@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
+/**
+ * トップページコンポーネント
+ */
 @Component({
   selector: 'app-introduction',
   templateUrl: './introduction.component.html',

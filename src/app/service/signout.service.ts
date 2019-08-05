@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CommonDeliveryService } from './common-delivery.service';
 import { ObjectUtil } from '../util/object.util';
+import { CookieService } from 'ngx-cookie-service';
 
 /**
  * 利用者サインアウトサービスクラス。
@@ -8,7 +9,7 @@ import { ObjectUtil } from '../util/object.util';
 @Injectable()
 export class SignoutService {
 
-    constructor(private commonDeliveryService: CommonDeliveryService) { }
+    constructor(private commonDeliveryService: CommonDeliveryService, private cookieService: CookieService) { }
 
     /**
      * サインイン状態フラグ
@@ -20,6 +21,7 @@ export class SignoutService {
      */
     public signout(): void {
         if(this.isSignedin()) {
+            this.cookieService.delete("currentUser");
             this.commonDeliveryService.finalize();
         };
     };
