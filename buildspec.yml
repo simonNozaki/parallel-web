@@ -17,7 +17,6 @@ phases:
   post_build:
     commands:
       - echo ///////////////// Build completed on `date` /////////////////
-      - aws s3 sync dist s3://parallel-web --delete
 artifacts:
   files:
     - dist/*
