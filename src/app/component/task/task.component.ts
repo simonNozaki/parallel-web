@@ -95,9 +95,9 @@ export class TaskComponent implements OnInit {
             // 登録リクエストDTOの生成
             registTaskRequestDto.setTaskTitle(this.taskForm.get("taskTitleControl").value);
             this.taskForm.get("taskLabelControl").value != "" ? registTaskRequestDto.setTaskLabel(this.taskForm.get("taskLabelControl").value)
-                : registTaskRequestDto.setTaskLabel(null)
+                : registTaskRequestDto.setTaskLabel(null);
             if (ObjectUtil.isNullOrUndefined(this.taskForm.get("startDateControl").value)) {
-                registTaskRequestDto.setStartDate(DateUtil.formatDateYMDWithSlash(new Date()));
+                registTaskRequestDto.setStartDate(new Date());
             } else { 
                 registTaskRequestDto.setStartDate(this.taskForm.get("startDateControl").value);
             }
@@ -189,6 +189,25 @@ export class TaskComponent implements OnInit {
                   this.commonDeliveryService.userTasks.splice(index, 1);
             }
         });
+    }
+
+    /**
+     * 登録されているタスクを更新します。クリックイベントのハンドラ。
+     */
+    public updateTask(): void {
+
+    }
+
+    /**
+     * タスクの期間を更新します。
+     */
+    public concatPeriod(task: Task): string {
+
+        if (ObjectUtil.isNullOrUndefined(task.deadline)) {
+            return DateUtil.formatDateYMDWithSlash(task.startDate) + " ~ ";
+        }
+
+        return DateUtil.formatDateYMDWithSlash(task.startDate) + " ~ " + DateUtil.formatDateYMDWithSlash(task.deadline);
     }
 
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { AppConst } from '../../../const/app.const';
 import { Router } from '@angular/router';
@@ -9,7 +9,7 @@ import { UserSigninResponseDto } from '../../../dto/interface/user-signin-respon
 import { ServiceConst } from '../../../const/service-const';
 import { StringUtil } from '../../../util/string-util';
 import { CookieService } from 'ngx-cookie-service';
-import { ApiErrorCode } from '../../../codedef/api-error-code.enum';
+import { ObjectUtil } from '../../../util/object.util';
 
 
 /**
@@ -20,7 +20,7 @@ import { ApiErrorCode } from '../../../codedef/api-error-code.enum';
   templateUrl: './signin.component.html',
   styleUrls: ['./signin.component.scss']
 })
-export class SigninComponent implements OnInit {
+export class SigninComponent implements OnInit, AfterViewInit {
 
     /**
      * デフォルトコンストラクタ。
@@ -35,9 +35,9 @@ export class SigninComponent implements OnInit {
     public checkedResult: string;
 
     /**
-     * データ処理結果
+     * ログインエラー
      */
-    public processedResult: string;
+    public signinError: string;
 
     /**
      * 利用者認証フォームグループ
@@ -54,13 +54,21 @@ export class SigninComponent implements OnInit {
      */
     public userId: string;
 
+    @ViewChild("spinner") public spinner: ElementRef;
+    private spinnerNativeElement;
+
     ngOnInit() {
         // Cookieに有効なログイン情報があれば、ログイン成功とする
         if(this.cookieService.check("currentUser")){
             this.commonDeliveryService.emitUserIdChange(this.cookieService.get("currentUser"));
             this.router.navigateByUrl(ServiceConst.BASE_SLASH + ServiceConst.URL_WEB_TASK);
         }
-    }  
+    }
+
+    ngAfterViewInit() {
+        console.log(this.spinner);
+        this.spinnerNativeElement =  this.spinner.nativeElement;
+    }
 
     /**
      * サインインを実行します。
@@ -73,15 +81,13 @@ export class SigninComponent implements OnInit {
 
         this.signinService.signin(req).subscribe(
             (res: UserSigninResponseDto) => {
-                this.commonDeliveryService.emitUserIdChange(res.userId);
-                this.router.navigateByUrl(ServiceConst.BASE_SLASH + ServiceConst.URL_WEB_TASK);
-            },
-            (res: UserSigninResponseDto) => {
-                console.log(res);
-                if(res.errors.errors.codes[0] === ApiErrorCode.ERR999999) this.processedResult = AppConst.SYSTEM_ERROR;
-                else this.processedResult = AppConst.USER_INFO_INVALID;
-            }
-        )
+                if(ObjectUtil.isNullOrUndefined(res.errors)) {
+                    this.commonDeliveryService.emitUserIdChange(res.userId);
+                    this.router.navigateByUrl(ServiceConst.BASE_SLASH + ServiceConst.URL_WEB_TASK);
+                } else {
+                    this.signinError = AppConst.USER_INFO_INVALID;
+                }
+            });
     }
 
     /**

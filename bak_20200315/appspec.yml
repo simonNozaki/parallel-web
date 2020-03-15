@@ -3,9 +3,10 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      nodejs: 8
+      java: openjdk8
     commands:
-      - echo ///////////////// Construct building runtime for nodejs  /////////////////
+      - echo ///////////////// Construct build runtime for Gradle  /////////////////
+      - gradle -v
   pre_build:
     commands:
       - echo ///////////////// Start to compile resources... /////////////////
@@ -17,7 +18,3 @@ phases:
   post_build:
     commands:
       - echo ///////////////// Build completed on `date` /////////////////
-      - aws s3 sync dist s3://parallel-web --delete
-artifacts:
-  files:
-    - dist/*

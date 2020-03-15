@@ -12,6 +12,7 @@ import { StringUtil } from '../../../util/string-util';
 import { CookieService } from 'ngx-cookie-service';
 import { Errors } from '../../../dto/common/errors';
 import { ApiErrorCode } from '../../../codedef/api-error-code.enum';
+import { ObjectUtil } from '../../../util/object.util';
 
 /**
  * 利用者サインアップコンポーネントクラス。
@@ -51,6 +52,11 @@ export class SignupComponent implements OnInit {
     public processedResult: string;
 
     /**
+     * 会員登録エラー
+     */
+    public signupError: string;
+
+    /**
      * 利用者情報登録フォームグループ
      */
     public signupForm: FormGroup = new FormGroup({
@@ -75,11 +81,17 @@ export class SignupComponent implements OnInit {
             req.password = this.signupForm.get("passwordControl").value;
             req.usedFlag = TaskManagerCode.USER_USED_FLAG_USED;
 
-            this.signupService.signup(req).subscribe(
-                (res: UserSignupResponseDto) => {
+            // Serviceクラスを実行します。
+            this.signupService.signup(req).subscribe((res: UserSignupResponseDto) => {
+                console.log(JSON.stringify(res));
+                // すでに使われているメールアドレスの場 合は、エラーメッセージを表示して何もしない
+                if (!ObjectUtil.isNullOrUndefined(res.errors)) {
+                    this.signupError = AppConst.USER_ALREADY_REGISTERD;
+                } else {
                     this.commonDeliveryService.emitUserIdChange(res.userId);
                     this.cookieService.set("currentUser", res.userId, 1);
                     this.router.navigateByUrl(ServiceConst.BASE_SLASH + ServiceConst.URL_WEB_TASK);
+                }
                 },
                 (error: Errors) => {
                     // console.error(error.errors);

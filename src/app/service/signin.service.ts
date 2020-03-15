@@ -20,20 +20,12 @@ export class SigninService {
     constructor(private http: HttpClient) { }
 
     /**
-     * 更新系リクエスト共通HTTPヘッダー
-     */
-    private httpHeaders: HttpHeaders = new HttpHeaders({
-        'Content-Type':  'application/json',
-        'Access-Control-Allow-Origin': '*'
-    });
-
-    /**
      * 新規利用者のサインインを実施します。
      * @param userSigninRequestDto
      * @returns Observable<UserSigninResponseDto>
      */
     public signin(userSigninRequestDto: UserSigninRequestDto): Observable<UserSigninResponseDto | GeneralError> {
-        return this.http.post<UserSigninRequestDto>(ServiceConst.URL_USER_SIGNIN, userSigninRequestDto, { headers : this.httpHeaders })
+        return this.http.post<UserSigninRequestDto>(ServiceConst.URL_USER_SIGNIN, userSigninRequestDto, { headers : ServiceConst.httpHeaders })
             .pipe((res: Observable<UserSigninResponseDto>) => {
                 // セッションの保存
                 res.subscribe((res: UserSigninResponseDto) => localStorage.setItem('id', res.userId));

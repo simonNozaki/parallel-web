@@ -5,6 +5,7 @@
 
 export const environment = {
     production: false,
-    apiUrl : "http://localhost:18080/",
+    // apiUrl : "http://localhost:18080/",
+    apiUrl : " https://3fbrtc9yp1.execute-api.ap-northeast-1.amazonaws.com/beta/",
     contextPath : "api/v1"
 };
