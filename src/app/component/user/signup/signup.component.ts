@@ -48,6 +48,11 @@ export class SignupComponent implements OnInit {
     public checkedResult: string;
 
     /**
+     * 会員登録エラー
+     */
+    public signupError: string;
+
+    /**
      * 利用者情報登録フォームグループ
      */
     public signupForm: FormGroup = new FormGroup({
@@ -77,7 +82,7 @@ export class SignupComponent implements OnInit {
                 console.log(JSON.stringify(res));
                 // すでに使われているメールアドレスの場 合は、エラーメッセージを表示して何もしない
                 if (!ObjectUtil.isNullOrUndefined(res.errors)) {
-                    this.checkedResult = AppConst.USER_ALREADY_REGISTERD;
+                    this.signupError = AppConst.USER_ALREADY_REGISTERD;
                 } else {
                     this.commonDeliveryService.emitUserIdChange(res.userId);
                     this.cookieService.set("currentUser", res.userId, 1);

@@ -45,9 +45,11 @@ export class DateUtil {
      * @returns YYYY/MM/DD形式の日付文字列
      */
     public static formatDateYMDWithSlash(operand: Date | null): string {
-        if(!ObjectUtil.isNullOrUndefined(operand)){
+        if(ObjectUtil.isNullOrUndefined(operand)){
             return AppConst.BLANK;
         }
+
+        console.log(operand);
 
         let year = operand.getFullYear();
         let month = operand.getMonth() + 1;

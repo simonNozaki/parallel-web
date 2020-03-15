@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
 import { ServiceConst } from '../../const/service-const';
 import { RegistTaskResponse } from '../../dto/interface/regist-task-response';
 import { DateUtil } from '../../util/date-util';
+import { StringUtil } from '../../util/string-util';
 
 /**
  * タスクの業務処理コンポーネント
@@ -95,16 +96,14 @@ export class TaskComponent implements OnInit {
             // 登録リクエストDTOの生成
             registTaskRequestDto.setTaskTitle(this.taskForm.get("taskTitleControl").value);
             this.taskForm.get("taskLabelControl").value != "" ? registTaskRequestDto.setTaskLabel(this.taskForm.get("taskLabelControl").value)
-                : registTaskRequestDto.setTaskLabel(null)
-            // registTaskRequestDto.setTaskLabel(this.taskForm.get("taskLabelControl").value);
+                : registTaskRequestDto.setTaskLabel(null);
             if (ObjectUtil.isNullOrUndefined(this.taskForm.get("startDateControl").value)) {
-                registTaskRequestDto.setStartDate(DateUtil.formatDateYMDWithSlash(new Date()));
+                registTaskRequestDto.setStartDate(new Date());
             } else { 
                 registTaskRequestDto.setStartDate(this.taskForm.get("startDateControl").value);
             }
             registTaskRequestDto.setDeadline(this.taskForm.get("deadlineControl").value);
             registTaskRequestDto.setTaskNote(this.taskForm.get("taskNoteControl").value);
-            // registTaskRequestDto.setCompletedFlag(TaskManagerCode.TASK_COMPLETED_FLAG_REGISTED);
             registTaskRequestDto.setUserId(this.userId);
 
             // サービスクラスを実行します。
@@ -191,6 +190,25 @@ export class TaskComponent implements OnInit {
                   this.commonDeliveryService.userTasks.splice(index, 1);
             }
         });
+    }
+
+    /**
+     * 登録されているタスクを更新します。クリックイベントのハンドラ。
+     */
+    public updateTask(): void {
+
+    }
+
+    /**
+     * タスクの期間を更新します。
+     */
+    public concatPeriod(task: Task): string {
+
+        if (ObjectUtil.isNullOrUndefined(task.deadline)) {
+            return DateUtil.formatDateYMDWithSlash(task.startDate) + " ~ ";
+        }
+
+        return DateUtil.formatDateYMDWithSlash(task.startDate) + " ~ " + DateUtil.formatDateYMDWithSlash(task.deadline);
     }
 
 }

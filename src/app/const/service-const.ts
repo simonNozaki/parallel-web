@@ -71,17 +71,17 @@ export module ServiceConst {
   // コールするAPIのURL定義
   //-----------------------------
   /** 
-   * タスクの新規登録 
+   * タスクの新規登録 : /task 
    */
-  export const URL_TASK_REGIST = BASE_URL + BASE_API_VERSION + BASE_URL_FUNC + '/regist';
+  export const URL_TASK_REGIST = BASE_URL + BASE_API_VERSION + BASE_URL_FUNC;
   
   /** 
-   * タスクの取得
+   * タスクの取得 : /task
    */
-  export const URL_TASK_FETCH = BASE_URL + BASE_API_VERSION + BASE_URL_FUNC + '/fetch';
+  export const URL_TASK_FETCH = BASE_URL + BASE_API_VERSION + BASE_URL_FUNC;
   
   /** 
-   * タスクの編集
+   * タスクの編集 : /task
    */
   export const URL_TASK_UPDATE = BASE_URL + BASE_API_VERSION + BASE_URL_FUNC + '/update';
   

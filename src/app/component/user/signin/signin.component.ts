@@ -35,6 +35,11 @@ export class SigninComponent implements OnInit {
     public checkedResult: string;
 
     /**
+     * ログインエラー
+     */
+    public signinError: string;
+
+    /**
      * 利用者認証フォームグループ
      */
     public signinForm: FormGroup = new FormGroup({
@@ -73,7 +78,7 @@ export class SigninComponent implements OnInit {
                 this.commonDeliveryService.emitUserIdChange(res.userId);
                 this.router.navigateByUrl(ServiceConst.BASE_SLASH + ServiceConst.URL_WEB_TASK);
             } else {
-                this.checkedResult = AppConst.USER_INFO_INVALID;
+                this.signinError = AppConst.USER_INFO_INVALID;
             }
         })
     }
