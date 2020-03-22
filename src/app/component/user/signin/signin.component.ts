@@ -10,6 +10,7 @@ import { ServiceConst } from '../../../const/service-const';
 import { StringUtil } from '../../../util/string-util';
 import { CookieService } from 'ngx-cookie-service';
 import { ObjectUtil } from '../../../util/object.util';
+import { AnimationUtil } from '../../../util/animation-util';
 
 
 /**
@@ -54,8 +55,10 @@ export class SigninComponent implements OnInit, AfterViewInit {
      */
     public userId: string;
 
+    /**
+     * スピナーのランディング用DOM要素。
+     */
     @ViewChild("spinner") public spinner: ElementRef;
-    private spinnerNativeElement;
 
     ngOnInit() {
         // Cookieに有効なログイン情報があれば、ログイン成功とする
@@ -65,10 +68,7 @@ export class SigninComponent implements OnInit, AfterViewInit {
         }
     }
 
-    ngAfterViewInit() {
-        console.log(this.spinner);
-        this.spinnerNativeElement =  this.spinner.nativeElement;
-    }
+    ngAfterViewInit() { }
 
     /**
      * サインインを実行します。
@@ -79,8 +79,13 @@ export class SigninComponent implements OnInit, AfterViewInit {
         req.email = this.signinForm.get("emailControl").value;
         req.password = this.signinForm.get("passwordControl").value;
 
+        AnimationUtil.startSpinner(this.spinner);
+
         this.signinService.signin(req).subscribe(
             (res: UserSigninResponseDto) => {
+
+                AnimationUtil.destroySpinner(this.spinner);
+
                 if(ObjectUtil.isNullOrUndefined(res.errors)) {
                     this.commonDeliveryService.emitUserIdChange(res.userId);
                     this.router.navigateByUrl(ServiceConst.BASE_SLASH + ServiceConst.URL_WEB_TASK);

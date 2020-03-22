@@ -192,16 +192,12 @@ export class TaskComponent implements OnInit {
     }
 
     /**
-     * 登録されているタスクを更新します。クリックイベントのハンドラ。
-     */
-    public updateTask(): void {
-
-    }
-
-    /**
      * タスクの期間を更新します。
      */
     public concatPeriod(task: Task): string {
+
+        console.log(task.startDate);
+        console.log(task.deadline);
 
         if (ObjectUtil.isNullOrUndefined(task.deadline)) {
             return DateUtil.formatDateYMDWithSlash(task.startDate) + " ~ ";

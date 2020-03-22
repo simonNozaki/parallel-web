@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { AppConst } from '../../../const/app.const';
 import { SignupService } from '../../../service/signup.service';
@@ -13,6 +13,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { Errors } from '../../../dto/common/errors';
 import { ApiErrorCode } from '../../../codedef/api-error-code.enum';
 import { ObjectUtil } from '../../../util/object.util';
+import { AnimationUtil } from '../../../util/animation-util';
 
 /**
  * 利用者サインアップコンポーネントクラス。
@@ -23,10 +24,6 @@ import { ObjectUtil } from '../../../util/object.util';
   styleUrls: ['./signup.component.scss']
 })
 export class SignupComponent implements OnInit {
-
-    //-----------------------------
-    // コンポーネント内プロパティ
-    //-----------------------------
 
     /**
      * デフォルトコンストラクタ
@@ -49,12 +46,15 @@ export class SignupComponent implements OnInit {
      */
     public checkedResult: string;
 
-    public processedResult: string;
-
     /**
      * 会員登録エラー
      */
     public signupError: string;
+
+    /**
+     * スピナーのランディング用DOM要素。
+     */
+    @ViewChild("spinner") public spinner: ElementRef;
 
     /**
      * 利用者情報登録フォームグループ
@@ -74,6 +74,9 @@ export class SignupComponent implements OnInit {
      */
     public signup(): void {
         if (!this.violateRistriction()) {
+
+            AnimationUtil.startSpinner(this.spinner);
+
             // リクエストの生成
             var req: UserSignupRequestDto = new UserSignupRequestDto();
             req.userName = this.signupForm.get("userNameControl").value;
@@ -83,7 +86,9 @@ export class SignupComponent implements OnInit {
 
             // Serviceクラスを実行します。
             this.signupService.signup(req).subscribe((res: UserSignupResponseDto) => {
-                console.log(JSON.stringify(res));
+                
+                AnimationUtil.destroySpinner(this.spinner);
+
                 // すでに使われているメールアドレスの場 合は、エラーメッセージを表示して何もしない
                 if (!ObjectUtil.isNullOrUndefined(res.errors)) {
                     this.signupError = AppConst.USER_ALREADY_REGISTERD;
@@ -96,8 +101,8 @@ export class SignupComponent implements OnInit {
                 (error: Errors) => {
                     // console.error(error.errors);
                     console.log(JSON.stringify(error));
-                    if(error.codes[0] === ApiErrorCode.ERR999999) this.processedResult = AppConst.SYSTEM_ERROR;
-                    else this.processedResult = AppConst.USER_ALREADY_REGISTERD;
+                    if(error.codes[0] === ApiErrorCode.ERR999999) this.signupError = AppConst.SYSTEM_ERROR;
+                    else this.signupError = AppConst.USER_ALREADY_REGISTERD;
                 },
             )
         }

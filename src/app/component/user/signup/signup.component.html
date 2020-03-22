@@ -17,11 +17,9 @@
         <div *ngIf="violateRistriction()" class="task-manager-signup-error">
             <p> {{ checkedResult }} </p>
         </div>
-
+        <!-- スピナー -->
+        <div #spinner class="spinner hidden"></div>
         <!-- APIレスポンスエラー -->
-        <div class="task-manager-signup-error">
-            <p> {{ processedResult }} </p>  
-        </div>
         <div id="task-manager-signup-error">
             <p> {{ signupError }} </p>
         </div>

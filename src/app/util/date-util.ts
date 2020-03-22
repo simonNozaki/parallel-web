@@ -49,13 +49,11 @@ export class DateUtil {
             return AppConst.BLANK;
         }
 
-        console.log(operand);
+        const source = new Date(operand);
 
-        let year = operand.getFullYear();
-        let month = operand.getMonth() + 1;
-        let date = operand.getDate();
-
-        console.log(year + AppConst.SLASH + month + AppConst.SLASH + date);
+        let year = source.getFullYear();
+        let month = source.getMonth() + 1;
+        let date = source.getDate();
 
         return year + AppConst.SLASH + month + AppConst.SLASH + date;
 
